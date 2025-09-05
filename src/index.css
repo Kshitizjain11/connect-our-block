@@ -2,41 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Civic App Design System - Friendly, trustworthy, gamified
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base Colors - Clean and accessible */
+    --background: 210 20% 98%;
+    --foreground: 215 25% 27%;
 
+    /* Card System */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 215 25% 27%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 25% 27%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Civic Brand Colors - Trustworthy yet friendly */
+    --primary: 210 100% 50%;  /* Civic blue */
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 210 100% 90%;
+    --primary-dark: 210 100% 35%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Community Colors */
+    --secondary: 35 100% 55%;  /* Warm community orange */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-light: 35 100% 85%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Success & Progress */
+    --success: 145 65% 45%;  /* Growth green */
+    --success-foreground: 0 0% 100%;
+    --success-light: 145 65% 90%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Gamification Colors */
+    --achievement: 280 85% 60%;  /* Achievement purple */
+    --achievement-foreground: 0 0% 100%;
+    --warning: 25 95% 55%;  /* Attention yellow */
+    --badge-gold: 45 100% 55%;
+    --badge-silver: 210 8% 75%;
+    --badge-bronze: 25 75% 50%;
+
+    /* Neutral System */
+    --muted: 210 15% 95%;
+    --muted-foreground: 215 15% 55%;
+    --accent: 210 25% 92%;
+    --accent-foreground: 215 25% 27%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 20% 90%;
+    --input: 210 20% 95%;
+    --ring: 210 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 12px;
+
+    /* Gradients for modern appeal */
+    --gradient-civic: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)) 0%, hsl(145 65% 60%) 100%);
+    --gradient-community: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(25 95% 65%) 100%);
+    --gradient-achievement: linear-gradient(135deg, hsl(var(--achievement)) 0%, hsl(280 85% 70%) 100%);
+    
+    /* Shadows for depth */
+    --shadow-civic: 0 4px 20px hsl(var(--primary) / 0.15);
+    --shadow-community: 0 4px 20px hsl(var(--secondary) / 0.15);
+    --shadow-soft: 0 2px 10px hsl(215 25% 27% / 0.1);
+    --shadow-raised: 0 8px 30px hsl(215 25% 27% / 0.12);
+
+    /* Animation variables */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
@@ -91,7 +127,6 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
 }
 
 @layer base {
@@ -101,5 +136,97 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Civic App Utilities */
+@layer components {
+  /* Gradient Backgrounds */
+  .bg-gradient-civic {
+    background: var(--gradient-civic);
+  }
+  
+  .bg-gradient-success {
+    background: var(--gradient-success);
+  }
+  
+  .bg-gradient-community {
+    background: var(--gradient-community);
+  }
+  
+  .bg-gradient-achievement {
+    background: var(--gradient-achievement);
+  }
+
+  /* Shadow Utilities */
+  .shadow-civic {
+    box-shadow: var(--shadow-civic);
+  }
+  
+  .shadow-community {
+    box-shadow: var(--shadow-community);
+  }
+  
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-raised {
+    box-shadow: var(--shadow-raised);
+  }
+
+  /* Interactive Elements */
+  .civic-card {
+    @apply bg-card rounded-2xl border border-border shadow-soft transition-all duration-300;
+  }
+  
+  .civic-card:hover {
+    @apply shadow-raised transform -translate-y-1;
+  }
+
+  /* Achievement Badge Base */
+  .badge-base {
+    @apply inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-medium transition-all duration-300;
+  }
+  
+  .badge-gold {
+    background: linear-gradient(135deg, hsl(var(--badge-gold)) 0%, hsl(45 100% 65%) 100%);
+    @apply text-white shadow-md;
+  }
+  
+  .badge-silver {
+    background: linear-gradient(135deg, hsl(var(--badge-silver)) 0%, hsl(210 8% 85%) 100%);
+    @apply text-foreground shadow-md;
+  }
+  
+  .badge-bronze {
+    background: linear-gradient(135deg, hsl(var(--badge-bronze)) 0%, hsl(25 75% 60%) 100%);
+    @apply text-white shadow-md;
+  }
+
+  /* Button Variations */
+  .btn-civic {
+    background: var(--gradient-civic);
+    @apply text-white shadow-civic hover:shadow-lg transform hover:scale-105 transition-all duration-300;
+  }
+  
+  .btn-community {
+    background: var(--gradient-community);
+    @apply text-white shadow-community hover:shadow-lg transform hover:scale-105 transition-all duration-300;
+  }
+
+  /* Progress Indicators */
+  .progress-glow {
+    background: var(--gradient-success);
+    @apply shadow-lg animate-pulse;
+  }
+
+  /* Gamification Elements */
+  .streak-counter {
+    @apply bg-gradient-achievement text-white rounded-full px-4 py-2 font-bold text-lg shadow-lg animate-bounce;
+  }
+  
+  .impact-number {
+    @apply text-4xl font-bold bg-gradient-civic bg-clip-text text-transparent;
   }
 }

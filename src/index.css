@@ -19,26 +19,26 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 27%;
 
-    /* Civic Brand Colors - Trustworthy yet friendly */
-    --primary: 210 100% 50%;  /* Civic blue */
+    /* Civic Brand Colors - Trust & Community */
+    --primary: 214 84% 56%;  /* Professional civic blue */
     --primary-foreground: 0 0% 100%;
-    --primary-light: 210 100% 90%;
-    --primary-dark: 210 100% 35%;
+    --primary-light: 214 84% 90%;
+    --primary-dark: 214 84% 40%;
 
-    /* Community Colors */
-    --secondary: 35 100% 55%;  /* Warm community orange */
+    /* Community & Action Colors */
+    --secondary: 142 69% 58%;  /* Community green */
     --secondary-foreground: 0 0% 100%;
-    --secondary-light: 35 100% 85%;
+    --secondary-light: 142 69% 85%;
 
     /* Success & Progress */
-    --success: 145 65% 45%;  /* Growth green */
+    --success: 142 69% 58%;  /* Consistent green for success */
     --success-foreground: 0 0% 100%;
-    --success-light: 145 65% 90%;
+    --success-light: 142 69% 90%;
 
     /* Gamification Colors */
-    --achievement: 280 85% 60%;  /* Achievement purple */
+    --achievement: 214 84% 70%;  /* Achievement blue variant */
     --achievement-foreground: 0 0% 100%;
-    --warning: 25 95% 55%;  /* Attention yellow */
+    --warning: 43 96% 56%;  /* Professional yellow */
     --badge-gold: 45 100% 55%;
     --badge-silver: 210 8% 75%;
     --badge-bronze: 25 75% 50%;
@@ -58,11 +58,11 @@ All colors MUST be HSL.
 
     --radius: 12px;
 
-    /* Gradients for modern appeal */
+    /* Professional gradients */
     --gradient-civic: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
-    --gradient-success: linear-gradient(135deg, hsl(var(--success)) 0%, hsl(145 65% 60%) 100%);
-    --gradient-community: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(25 95% 65%) 100%);
-    --gradient-achievement: linear-gradient(135deg, hsl(var(--achievement)) 0%, hsl(280 85% 70%) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)) 0%, hsl(142 69% 65%) 100%);
+    --gradient-community: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(142 69% 70%) 100%);
+    --gradient-achievement: linear-gradient(135deg, hsl(var(--achievement)) 0%, hsl(214 84% 80%) 100%);
     
     /* Shadows for depth */
     --shadow-civic: 0 4px 20px hsl(var(--primary) / 0.15);

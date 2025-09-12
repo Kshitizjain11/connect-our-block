@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 interface TrashItem {
   id: string;
@@ -71,6 +72,22 @@ const TrashCleanupEntry = ({ onComplete }: TrashCleanupEntryProps) => {
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-primary-light to-secondary-light flex items-center justify-center z-50">
       <div className="relative w-full h-full max-w-4xl mx-auto">
+        {/* Skip Button */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.8 }}
+          className="absolute top-8 right-8 z-10"
+        >
+          <Button
+            variant="outline"
+            onClick={onComplete}
+            className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
+          >
+            Skip Intro
+          </Button>
+        </motion.div>
+
         {/* Header */}
         <div className="text-center pt-12 pb-8">
           <motion.h1 

@@ -1,13 +1,15 @@
-import { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 interface TrashItem {
   id: string;
-  emoji: string;
+  image: string;
   name: string;
   left: number;
   top: number;
+  rotation: number;
+  scale: number;
 }
 
 interface TrashCleanupEntryProps {
@@ -15,13 +17,63 @@ interface TrashCleanupEntryProps {
 }
 
 const TrashCleanupEntry = ({ onComplete }: TrashCleanupEntryProps) => {
+  
+
   const [trashItems, setTrashItems] = useState<TrashItem[]>([
-    { id: "1", emoji: "🗑️", name: "Trash Bag", left: 20, top: 30 },
-    { id: "2", emoji: "🥤", name: "Soda Cup", left: 60, top: 20 },
-    { id: "3", emoji: "🍕", name: "Pizza Box", left: 80, top: 40 },
-    { id: "4", emoji: "🚬", name: "Cigarette", left: 30, top: 60 },
-    { id: "5", emoji: "🧻", name: "Paper", left: 70, top: 70 },
-    { id: "6", emoji: "🥫", name: "Can", left: 15, top: 50 },
+    { 
+      id: "1", 
+      image: '/images/trash/trash-bag.png', // Trash bag
+      name: "Trash Bag", 
+      left: 20, 
+      top: 30, 
+      rotation: -5, 
+      scale: 1.2 
+    },
+    { 
+      id: "2", 
+      image: '/images/trash/soda-cup.png', // Soda cup
+      name: "Soda Cup", 
+      left: 60, 
+      top: 20, 
+      rotation: 8, 
+      scale: 1.0
+    },
+    { 
+      id: "3", 
+      image: '/images/trash/pizza-box.png', // Pizza box
+      name: "Pizza Box", 
+      left: 80, 
+      top: 40, 
+      rotation: 3, 
+      scale: 1.3
+    },
+    { 
+      id: "4", 
+      image: '/images/trash/cigarette.png', // Cigarette
+      name: "Cigarette", 
+      left: 30, 
+      top: 60, 
+      rotation: -8, 
+      scale: 0.8
+    },
+    { 
+      id: "5", 
+      image: 'https://images.pexels.com/photos/1587442/pexels-photo-1587442.jpeg?cs=srgb&dl=pexels-colys-hat-740764-1587442.jpg&fm=jpg', // Crumbled paper
+      name: "Paper", 
+      left: 70, 
+      top: 70, 
+      rotation: 5, 
+      scale: 1.0
+    },
+    { 
+      id: "6", 
+      image: '/images/trash/can.png', // Soda can
+      name: "Can", 
+      left: 15, 
+      top: 50, 
+      rotation: -3, 
+      scale: 0.9
+    },
   ]);
 
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
@@ -134,21 +186,150 @@ const TrashCleanupEntry = ({ onComplete }: TrashCleanupEntryProps) => {
                   position: "absolute",
                   left: `${item.left}%`,
                   top: `${item.top}%`,
+                  width: '160px',
+                  height: '160px',
                   transform: "translate(-50%, -50%)",
+                  zIndex: 10
                 }}
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ zIndex: 50 }}
               >
                 <div
-                  className={`cursor-grab active:cursor-grabbing select-none transition-transform hover:scale-110 ${
-                    draggedItem === item.id ? "scale-110 rotate-12" : ""
+                  className={`cursor-grab active:cursor-grabbing select-none transition-all hover:scale-110 ${
+                    draggedItem === item.id ? "scale-110 z-50" : ""
                   }`}
                   draggable
                   onDragStart={(e) => handleDragStart(e, item.id)}
                   onDragEnd={handleDragEnd}
                 >
-                  <div className="bg-white/90 rounded-2xl p-4 shadow-lg border-2 border-white/50 backdrop-blur-sm">
-                    <div className="text-4xl mb-2">{item.emoji}</div>
-                    <div className="text-sm font-medium text-gray-700">{item.name}</div>
+                  <div 
+                    className="relative" 
+                    style={{
+                      transform: `rotate(${item.rotation}deg) scale(${item.scale})`,
+                      transformStyle: 'preserve-3d',
+                      transition: 'all 0.3s ease-out',
+                      width: '120px',
+                      height: '120px',
+                      perspective: '1000px'
+                    }}>
+                      {/* Sticker Container */}
+                      <div 
+                        className="relative w-full h-full"
+                        style={{
+                          transformStyle: 'preserve-3d',
+                          transition: 'transform 0.3s ease-out',
+                        }}
+                        onMouseMove={(e) => {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          const x = e.clientX - rect.left;
+                          const y = e.clientY - rect.top;
+                          const centerX = rect.width / 2;
+                          const centerY = rect.height / 2;
+                          const rotateY = (x - centerX) / 20;
+                          const rotateX = (centerY - y) / 20;
+                          
+                          e.currentTarget.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'rotateX(0) rotateY(0)';
+                        }}
+                      >
+                        {/* Peel Corner */}
+                        <div className="absolute top-0 right-0 w-12 h-12 z-20 cursor-pointer"
+                          onMouseEnter={(e) => {
+                            const corner = e.currentTarget;
+                            corner.style.transition = 'transform 0.2s ease-out';
+                            corner.style.transform = 'translate(10px, -10px) rotate(15deg)';
+                            
+                            // Show peel shadow
+                            const shadow = corner.previousElementSibling as HTMLElement;
+                            if (shadow) {
+                              shadow.style.opacity = '1';
+                              shadow.style.transform = 'translate(5px, -5px) rotate(5deg)';
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            const corner = e.currentTarget;
+                            corner.style.transform = 'translate(0, 0) rotate(0)';
+                            
+                            // Hide peel shadow
+                            const shadow = corner.previousElementSibling as HTMLElement;
+                            if (shadow) {
+                              shadow.style.opacity = '0';
+                              shadow.style.transform = 'translate(0, 0) rotate(0)';
+                            }
+                          }}
+                        >
+                          <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-transparent to-transparent border-l-2 border-t-2 border-white/50 rounded-tl-lg" 
+                               style={{
+                                 transform: 'rotate(45deg) translate(0, -50%)',
+                                 transformOrigin: 'bottom right',
+                                 clipPath: 'polygon(100% 0, 0% 100%, 100% 100%)',
+                                 background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 50%, transparent 100%)',
+                                 transition: 'all 0.3s ease-out'
+                               }}
+                          ></div>
+                        </div>
+                        
+                        {/* Peel Shadow */}
+                        <div className="absolute top-0 right-0 w-12 h-12 z-10 pointer-events-none"
+                             style={{
+                               opacity: 0,
+                               transition: 'all 0.3s ease-out',
+                               filter: 'blur(2px)',
+                               background: 'rgba(0,0,0,0.2)',
+                               clipPath: 'polygon(100% 0, 0% 100%, 100% 100%)',
+                               transformOrigin: 'bottom right',
+                             }}
+                        ></div>
+                        
+                        {/* Sticker Content */}
+                        <div 
+                          className="relative w-full h-full bg-transparent rounded-lg overflow-visible"
+                          style={{
+                            transform: 'translateZ(10px)',
+                            transition: 'all 0.3s ease-out',
+                            boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+                          }}
+                        >
+                          <div className="relative w-full h-full flex items-center justify-center p-2">
+                            <div style={{
+                              width: '100px',
+                              height: '100px',
+                              position: 'relative',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}>
+                              <img 
+                                src={item.image} 
+                                alt={item.name}
+                                style={{
+                                  maxWidth: '100%',
+                                  maxHeight: '100%',
+                                  objectFit: 'contain',
+                                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                                  WebkitFilter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                                  imageRendering: 'crisp-edges',
+                                  pointerEvents: 'none'
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs font-medium text-center py-1 px-2 truncate">
+                            {item.name}
+                          </div>
+                        </div>
+                    </div>
+                    
+                    {/* Sticker Shadow */}
+                    <div 
+                      className="absolute -bottom-2 left-2 right-2 h-4 bg-black/10 rounded-full"
+                      style={{
+                        filter: 'blur(5px)',
+                        transform: 'scale(0.9)',
+                        transition: 'all 0.3s ease-out'
+                      }}
+                    ></div>
                   </div>
                 </div>
               </motion.div>

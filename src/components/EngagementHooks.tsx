@@ -2,8 +2,42 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Bell, Calendar, BarChart3, Newspaper, Gift, Star, Zap } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const EngagementHooks = () => {
+  const { toast } = useToast();
+
+  const showNotification = (notification: any) => {
+    toast({
+      title: notification.title,
+      description: notification.subtitle,
+      duration: 5000,
+    });
+  };
+
+  const showSuccessNotification = () => {
+    toast({
+      title: "Your report helped fix a streetlight today ✨",
+      description: "MG Road • Just now",
+      duration: 5000,
+    });
+  };
+
+  const showProgressNotification = () => {
+    toast({
+      title: "You've improved your neighborhood's cleanliness score!",
+      description: "Ward 68 • Just now", 
+      duration: 5000,
+    });
+  };
+
+  const showAchievementNotification = () => {
+    toast({
+      title: "Streak Achievement Unlocked! 🔥",
+      description: "7 days of civic engagement",
+      duration: 5000,
+    });
+  };
   const notifications = [
     {
       type: "success",
@@ -107,7 +141,8 @@ const EngagementHooks = () => {
               {notifications.map((notification, index) => (
                 <div 
                   key={index} 
-                  className="flex items-start gap-4 p-4 rounded-xl border border-border hover:shadow-soft transition-all duration-300"
+                  className="flex items-start gap-4 p-4 rounded-xl border border-border hover:shadow-soft transition-all duration-300 cursor-pointer"
+                  onClick={() => showNotification(notification)}
                 >
                   <div className={`${notification.bg} rounded-lg p-2 text-xl`}>
                     {notification.icon}
@@ -117,7 +152,7 @@ const EngagementHooks = () => {
                     <p className="text-sm text-muted-foreground">{notification.subtitle}</p>
                   </div>
                   <div className={`${notification.color} text-xs font-medium`}>
-                    Just now
+                    Click to test
                   </div>
                 </div>
               ))}
@@ -169,7 +204,10 @@ const EngagementHooks = () => {
               ))}
             </div>
 
-            <Button className="w-full mt-6 btn-civic">
+            <Button 
+              className="w-full mt-6 btn-civic" 
+              onClick={showSuccessNotification}
+            >
               View Full Report 📋
             </Button>
           </Card>
@@ -189,7 +227,15 @@ const EngagementHooks = () => {
                 </div>
                 <h4 className="text-xl font-bold mb-3">{feature.title}</h4>
                 <p className="text-muted-foreground mb-6">{feature.description}</p>
-                <Button variant="outline" className="w-full">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => {
+                    if (index === 0) showProgressNotification();
+                    else if (index === 1) showSuccessNotification();
+                    else showAchievementNotification();
+                  }}
+                >
                   {feature.cta}
                 </Button>
               </Card>

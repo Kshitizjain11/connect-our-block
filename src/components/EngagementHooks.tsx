@@ -1,11 +1,66 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Bell, Calendar, BarChart3, Newspaper, Gift, Star, Zap } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Bell, Calendar, BarChart3, Newspaper, Gift, Star, Zap, Clock, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 const EngagementHooks = () => {
   const { toast } = useToast();
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
+
+  const recentNotifications = [
+    {
+      type: "success",
+      title: "Your report helped fix a streetlight today ✨",
+      subtitle: "MG Road • 2 hours ago",
+      icon: "💡",
+      color: "text-success",
+      bg: "bg-success/10",
+      time: "2h ago"
+    },
+    {
+      type: "progress",
+      title: "You've improved your neighborhood's cleanliness score!",
+      subtitle: "Ward 68 • 4 hours ago",
+      icon: "🧹",
+      color: "text-primary",
+      bg: "bg-primary/10",
+      time: "4h ago"
+    },
+    {
+      type: "achievement",
+      title: "Streak Achievement Unlocked! 🔥",
+      subtitle: "7 days of civic engagement",
+      icon: "🏆",
+      color: "text-yellow-600",
+      bg: "bg-yellow-50",
+      time: "6h ago"
+    },
+    {
+      type: "community",
+      title: "Your area improved by 15% this month! 📈",
+      subtitle: "Thanks to you and 234 neighbors",
+      icon: "🌟",
+      color: "text-secondary",
+      bg: "bg-secondary/10",
+      time: "1d ago"
+    },
+    {
+      type: "info",
+      title: "Water supply maintenance scheduled",
+      subtitle: "Sunday 6 AM - 12 PM • Ward 68",
+      icon: "🔧",
+      color: "text-blue-600",
+      bg: "bg-blue-50",
+      time: "2d ago"
+    }
+  ];
+
+  const showNotificationModal = () => {
+    setIsNotificationModalOpen(true);
+  };
 
   const showNotification = (notification: any) => {
     toast({
@@ -142,7 +197,7 @@ const EngagementHooks = () => {
                 <div 
                   key={index} 
                   className="flex items-start gap-4 p-4 rounded-xl border border-border hover:shadow-soft transition-all duration-300 cursor-pointer"
-                  onClick={() => showNotification(notification)}
+                  onClick={showNotificationModal}
                 >
                   <div className={`${notification.bg} rounded-lg p-2 text-xl`}>
                     {notification.icon}
@@ -152,7 +207,7 @@ const EngagementHooks = () => {
                     <p className="text-sm text-muted-foreground">{notification.subtitle}</p>
                   </div>
                   <div className={`${notification.color} text-xs font-medium`}>
-                    Click to test
+                    View All
                   </div>
                 </div>
               ))}
@@ -328,6 +383,52 @@ const EngagementHooks = () => {
             </Badge>
           </div>
         </Card>
+        
+        {/* Notification Modal */}
+        <Dialog open={isNotificationModalOpen} onOpenChange={setIsNotificationModalOpen}>
+          <DialogContent className="max-w-md mx-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Bell className="h-5 w-5 text-primary" />
+                Recent Notifications
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="max-h-96 overflow-y-auto space-y-3">
+              {recentNotifications.map((notification, index) => (
+                <div 
+                  key={index} 
+                  className="flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors"
+                >
+                  <div className={`${notification.bg} rounded-lg p-2 text-lg flex-shrink-0`}>
+                    {notification.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-sm mb-1 leading-tight">{notification.title}</p>
+                    <p className="text-xs text-muted-foreground mb-1">{notification.subtitle}</p>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-3 w-3 text-muted-foreground" />
+                      <span className="text-xs text-muted-foreground">{notification.time}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="flex gap-2 mt-4">
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={() => setIsNotificationModalOpen(false)}
+              >
+                Close
+              </Button>
+              <Button className="flex-1">
+                Mark All Read
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );

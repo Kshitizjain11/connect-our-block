@@ -50,7 +50,7 @@ const Report = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.category || !formData.description) {
       toast({
@@ -61,19 +61,39 @@ const Report = () => {
       return;
     }
 
-    // Simulate form submission
-    toast({
-      title: "Report submitted",
-      description: "Your issue report has been submitted successfully!",
-    });
-    
-    // Reset form
-    setFormData({
-      photo: null,
-      location: "",
-      category: "",
-      description: ""
-    });
+    try {
+      const body = new FormData();
+      if (formData.photo) body.append("photo", formData.photo);
+      body.append("title", formData.category);
+      body.append("description", formData.description);
+      body.append("location", formData.location);
+      body.append("userId", "demo-user-1");
+      body.append("userName", "Demo User");
+
+      const res = await fetch("/api/issues", {
+        method: "POST",
+        body,
+      });
+      if (!res.ok) throw new Error("Failed to submit");
+
+      toast({
+        title: "Report submitted",
+        description: "Your issue report has been submitted successfully!",
+      });
+
+      setFormData({
+        photo: null,
+        location: "",
+        category: "",
+        description: ""
+      });
+    } catch (err) {
+      toast({
+        title: "Submission failed",
+        description: "Please try again in a moment.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

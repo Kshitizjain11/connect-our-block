@@ -10,6 +10,7 @@ const Navbar = () => {
   const navItems = [
     { name: "Home", icon: MapPin, href: "/" },
     { name: "Report Issue", icon: MapPin, href: "/report" },
+    { name: "My Issues", icon: MapPin, href: "/my-issues" },
     { name: "Community", icon: Users, href: "/community" },
     { name: "Leaderboard", icon: Trophy, href: "/leaderboard" },
     { name: "Updates", icon: MessageSquare, href: "/updates" },

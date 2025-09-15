@@ -12,6 +12,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Updates from "./pages/Updates";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
+import MyIssues from "./pages/MyIssues";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/report" element={<Report />} />
+            <Route path="/my-issues" element={<MyIssues />} />
             <Route path="/community" element={<Community />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/updates" element={<Updates />} />

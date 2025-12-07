@@ -42,7 +42,7 @@ const Timeline = () => {
   return (
     <div className="relative py-16">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-foreground mb-4">How CivicFix Works</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-4">How CivicEngage Works</h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Follow these simple steps to make a real impact in your community through civic engagement.
         </p>

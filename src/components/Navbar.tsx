@@ -28,7 +28,7 @@ const Navbar = () => {
               <MapPin className="w-6 h-6 text-white" />
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-lg text-foreground">CivicFix</span>
+              <span className="font-bold text-lg text-foreground">CivicEngage</span>
               <span className="text-xs text-muted-foreground">Report • Engage • Improve</span>
             </div>
           </div>
